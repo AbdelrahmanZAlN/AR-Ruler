@@ -77,6 +77,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         sceneView.scene.rootNode.addChildNode(dotNode)
         dotNodes.append(dotNode)
+        if dotNodes.count >= 2 {
+            calculate()
+        }
     }
 
     func calculate () {
@@ -101,7 +104,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         textGeometry.firstMaterial?.diffuse.contents = UIColor.red
         
         textNode = SCNNode(geometry: textGeometry)
-        textNode.position = SCNVector3(position.x, position.y, position.z)
+        textNode.position = SCNVector3(position.x, position.y + 0.01, position.z)
         textNode.scale = SCNVector3(0.1, 0.1, 0.1)
         
         sceneView.scene.rootNode.addChildNode(textNode)
