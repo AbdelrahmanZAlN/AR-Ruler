@@ -14,8 +14,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet var sceneView: ARSCNView!
     
     var dotNodes = [SCNNode]()
-    
     var textNode = SCNNode()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -47,6 +48,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         if dotNodes.count >= 2 {
+            textNode.removeFromParentNode()
             for dot in dotNodes {
                 dot.removeFromParentNode()
             }
@@ -65,8 +67,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func addDot(at hitResult: ARHitTestResult){
         let dot = SCNSphere(radius: 0.005)
         let material = SCNMaterial()
-        material.diffuse.contents = UIColor.red
+        material.diffuse.contents = UIColor.blue
 
+        dot.materials = [material]
+        
         let dotNode = SCNNode(geometry: dot)
         
         dotNode.position = SCNVector3(
@@ -77,6 +81,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         sceneView.scene.rootNode.addChildNode(dotNode)
         dotNodes.append(dotNode)
+        
         if dotNodes.count >= 2 {
             calculate()
         }
@@ -92,7 +97,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             pow(end.position.z - start.position.z , 2)
         )
         
-        updateText(text: String(distance), atPosition: end.position)
+        updateText(text: "\(distance)", atPosition: end.position)
          
     }
     
@@ -105,8 +110,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         textNode = SCNNode(geometry: textGeometry)
         textNode.position = SCNVector3(position.x, position.y + 0.01, position.z)
-        textNode.scale = SCNVector3(0.1, 0.1, 0.1)
-        
+        textNode.scale = SCNVector3(0.01, 0.01, 0.01)
+
         sceneView.scene.rootNode.addChildNode(textNode)
     }
     
